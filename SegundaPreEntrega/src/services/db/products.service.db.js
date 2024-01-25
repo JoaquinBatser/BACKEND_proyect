@@ -1,9 +1,12 @@
 import { productModel } from '../../models/products.model.js'
+import mongoose from 'mongoose'
 
 export default class ProductsManager {
-  async getProducts(limit) {
+  async getProducts(filter) {
     try {
-      const products = await productModel.find().limit(limit).lean()
+      filter.options.lean = true
+      const products = await productModel.paginate(filter.query, filter.options)
+
       return products
     } catch (error) {
       console.log(error)
@@ -13,9 +16,15 @@ export default class ProductsManager {
   async getProductById(id) {
     try {
       const product = await productModel.findById(id).lean()
-      return product
+      return !product
+        ? { success: false, message: 'Product not found' }
+        : { success: true, message: 'Product found', product }
     } catch (error) {
-      console.log(error)
+      if (error instanceof mongoose.Error.CastError) {
+        return { success: false, message: 'Invalid ID format' }
+      } else {
+        return { success: false, message: 'An error occurred' }
+      }
     }
   }
 
@@ -29,21 +38,33 @@ export default class ProductsManager {
     }
   }
 
-  async updateProduct(id, product) {
+  async updateProduct(id, productUpdate) {
     try {
-      const result = await productModel.updateOne({ _id: id }, product)
-      return result
+      const product = await productModel.findByIdAndUpdate(id, productUpdate, { new: true }).lean()
+      return !product
+        ? { success: false, message: 'Product not found' }
+        : { success: true, message: 'Product updated', product }
     } catch (error) {
-      console.log(error)
+      if (error instanceof mongoose.Error.CastError) {
+        return { success: false, message: 'Invalid ID format' }
+      } else {
+        return { success: false, message: 'An error occurred' }
+      }
     }
   }
 
   async deleteProduct(id) {
     try {
-      const result = await productModel.findByIdAndDelete(id)
-      return result
+      const product = await productModel.findByIdAndDelete(id).lean()
+      return !product
+        ? { success: false, message: 'Product not found' }
+        : { success: true, message: 'Product deleted successfully', product }
     } catch (error) {
-      console.log(error)
+      if (error instanceof mongoose.Error.CastError) {
+        return { success: false, message: 'Invalid ID format' }
+      } else {
+        return { success: false, message: 'An error occurred' }
+      }
     }
   }
 }

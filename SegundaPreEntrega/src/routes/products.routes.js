@@ -2,17 +2,39 @@ import { Router } from 'express'
 import ProductManager from '../services/db/products.service.db.js'
 
 const productsRouter = Router()
-
 const productManager = new ProductManager()
 
 productsRouter.get('/', async (req, res) => {
   try {
-    const { limit } = req.query
-    const products = await productManager.getProducts(limit)
+    const { limit = 10, page = 1, sort, category } = req.query
+
+    const filter = {
+      query: {},
+      options: {
+        limit,
+        page,
+      },
+    }
+
+    if (sort) {
+      filter.options.sort = { price: sort }
+    }
+
+    if (category) {
+      filter.query.category = category
+    }
+
+    const products = await productManager.getProducts(filter)
+
     if (products.length === 0) {
       return res.status(404).json({ success: false, message: 'Products not found' })
     }
-    res.json(products)
+
+    res.status(200).json({
+      success: true,
+      message: 'Products found',
+      products: products.docs,
+    })
   } catch (error) {
     console.log(error)
   }
@@ -21,11 +43,10 @@ productsRouter.get('/', async (req, res) => {
 productsRouter.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
-    const product = await productManager.getProductById(id)
+    const data = await productManager.getProductById(id)
     const response = {
-      status: 'success',
-      message: 'Product found',
-      data: product,
+      message: data.message,
+      product: data.product,
     }
     res.json(response)
   } catch (error) {
@@ -61,7 +82,7 @@ productsRouter.put('/:id', async (req, res) => {
   const { title, description, price, category, thumbnail, code, stock } = req.body
 
   try {
-    await productManager.updateProduct(id, {
+    const data = await productManager.updateProduct(id, {
       title,
       description,
       price,
@@ -70,10 +91,12 @@ productsRouter.put('/:id', async (req, res) => {
       code,
       stock,
     })
+
     const response = {
-      status: 'success',
-      message: 'Product updated',
+      message: data.message,
+      product: data.product,
     }
+
     res.json(response)
   } catch (error) {
     console.log(error)
@@ -83,10 +106,9 @@ productsRouter.put('/:id', async (req, res) => {
 productsRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
   try {
-    await productManager.deleteProduct(id)
+    const data = await productManager.deleteProduct(id)
     const response = {
-      status: 'success',
-      message: 'Product deleted',
+      message: data.message,
     }
     res.json(response)
   } catch (error) {
