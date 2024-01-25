@@ -1,18 +1,24 @@
-<div>
+<h1>Products</h1>
+
+<div class='products-list'>
   {{#each products}}
-    <div>
-      <p>{{this.id}}</p>
-      <div><img src={{this.thumbnail}} alt={{this.title}} /></div>
-      <div>
-        <div>
-          <h3>{{this.title}}</h3>
-          <p>{{this.category}}</p>
-          <p>{{this.description}}</p>
-          <p>${{this.price}}</p>
-          <p>{{this.stock}}</p>
-          <p>{{this.code}}</p>
-        </div>
+    <div class='product-container'>
+      <div class='product-image'><img
+          src='https://via.assets.so/img.jpg?w=200&h=200&tc=white&bg=black&t=img'
+          alt={{this.title}}
+        /></div>
+      <div class='product-details'>
+        <small id='{{this.id}}'>{{this.id}}</small>
+        <h3>{{this.title}}</h3>
+        <p>{{this.category}}</p>
+        <p>{{this.description}}</p>
+        <p>${{this.price}}</p>
+        <p>{{this.stock}}</p>
+        <p>{{this.code}}</p>
       </div>
+      <button type='button' class='add-to-cart-button' id='add-to-cart-btn'>Add to Cart</button>
     </div>
   {{/each}}
 </div>
+
+<script type='text/javascript' src='/js/addToCart.js'></script>

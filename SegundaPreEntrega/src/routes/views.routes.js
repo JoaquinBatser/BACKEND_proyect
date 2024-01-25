@@ -7,20 +7,43 @@ const viewsRouter = Router()
 
 viewsRouter.get('/products', async (req, res) => {
   try {
+    const { limit = 10, page = 1, sort, category } = req.query
+
+    const filter = {
+      query: {},
+      options: {
+        limit,
+        page,
+      },
+    }
+
+    if (sort) {
+      filter.options.sort = { price: sort }
+    }
+
+    if (category) {
+      filter.query.category = category
+    }
     const productsManager = new ProductsManager()
-    const products = await productsManager.getProducts()
-    res.render('products', { products })
+    const data = await productsManager.getProducts(filter)
+    const products = data.docs
+
+    res.render('products', { title: 'Products', products, style: 'css/products.css' })
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
   }
 })
 
-viewsRouter.get('/carts', async (req, res) => {
+viewsRouter.get('/cart/:cId', async (req, res) => {
+  const { cId } = req.params
   try {
     const cartManager = new CartsManager()
-    const carts = await cartManager.getCarts()
-    res.render('carts', { carts })
+    const cart = await cartManager.getCartById(cId)
+    const { products } = cart
+    console.log(products)
+
+    res.render('cart', { title: 'Cart', products, style: '/css/cart.css' })
   } catch (error) {
     console.log(error)
     res.status(500).send(error)

@@ -65,11 +65,45 @@ cartRouter.post('/:cId/product/:pId', async (req, res) => {
   }
 })
 
-cartRouter.delete('/:cId/product/:pId', async (req, res) => {
-  const { cId } = req.params
-  const { pId } = req.params
+cartRouter.put('/:cId/product/:pId', async (req, res) => {
+  const { cId, pId } = req.params
+  const { quantity } = req.body
   try {
-    await cartsManager.deleteProductFromCart(cId, pId)
+    const cart = await cartsManager.updateProductQuantity(cId, pId, quantity)
+    if (!cart) {
+      res.status(404).json({
+        success: false,
+        message: 'Cart not found',
+      })
+      return
+    }
+    res.status(200).json({
+      success: true,
+      message: `Product ${pId} quantity updated in cart ${cId}`,
+      cart,
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+cartRouter.delete('/:cId/product/:pId', async (req, res) => {
+  const { cId, pId } = req.params
+
+  try {
+    const cart = await cartsManager.deleteProductFromCart(cId, pId)
+    if (!cart) {
+      res.status(404).json({
+        success: false,
+        message: 'Cart not found',
+      })
+      return
+    }
+    res.status(200).json({
+      success: true,
+      message: `Product ${pId} deleted from cart ${cId}`,
+      cart,
+    })
   } catch (error) {
     console.log(error)
   }

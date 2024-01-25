@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 
-import { __dirname } from './utils/utils.js'
+import { __dirname } from './utils.js'
 import indexRouter from './routes/index.routes.js'
 
 dotenv.config()

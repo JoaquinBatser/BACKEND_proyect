@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: #121212;
+  color: white;
+  font-family: 'Inter';
+}
+
+h1 {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ul {
+  list-style: none;
+}
+
+.products-list {
+  display: grid;
+  gap: 12px;
+  margin: auto;
+  width: 800px;
+}
+
+.product-container {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  padding: 10px;
+}
+.product-details {
+  flex: 1;
+}
+.product-image img {
+  border-radius: 10px;
+  margin-right: 20px;
+}

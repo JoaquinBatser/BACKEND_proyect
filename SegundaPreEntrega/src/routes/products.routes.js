@@ -21,7 +21,7 @@ productsRouter.get('/', async (req, res) => {
     }
 
     if (category) {
-      filter.query.category = category
+      filter.query = { category }
     }
 
     const products = await productManager.getProducts(filter)

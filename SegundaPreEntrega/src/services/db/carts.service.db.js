@@ -59,6 +59,27 @@ export default class CartsManager {
     }
   }
 
+  async updateProductQuantity(cId, pId, quantity) {
+    try {
+      const productExistsInCart = await cartModel.exists({ _id: cId, 'products.product': pId })
+
+      if (!productExistsInCart) {
+        throw new Error('Product not found in cart')
+      }
+
+      const cart = await cartModel
+        .findOneAndUpdate(
+          { _id: cId, 'products.product': pId },
+          { $set: { 'products.$.quantity': quantity } },
+          { new: true }
+        )
+        .lean()
+      return cart
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async deleteProductFromCart(cId, pId) {
     try {
       const cart = await cartModel
