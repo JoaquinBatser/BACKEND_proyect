@@ -1,11 +1,11 @@
 import { Router } from 'express'
 import CartsManager from '../services/db/carts.service.db.js'
 
-const router = Router()
+const cartRouter = Router()
 
 const cartsManager = new CartsManager()
 
-router.get('/', async (req, res) => {
+cartRouter.get('/', async (req, res) => {
   try {
     const carts = await cartsManager.getCarts()
     res.json(carts)
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:cId', async (req, res) => {
+cartRouter.get('/:cId', async (req, res) => {
   const { cId } = req.params
   try {
     const cart = await cartsManager.getCartById(cId)
@@ -29,7 +29,7 @@ router.get('/:cId', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
+cartRouter.post('/', async (req, res) => {
   try {
     await cartsManager.newCart()
     res.json({
@@ -43,17 +43,48 @@ router.post('/', async (req, res) => {
   }
 })
 
-router.post('/:cId/product/:pId', async (req, res) => {
-  const { cId } = req.params
-  const { pId } = req.params
+cartRouter.post('/:cId/product/:pId', async (req, res) => {
+  const { cId, pId } = req.params
+
   try {
-    await cartsManager.addProductToCart(cId, pId)
-    res.json({
-      message: 'Product updated or added successfully',
+    const cart = await cartsManager.addProductToCart(cId, pId)
+    if (!cart) {
+      res.status(404).json({
+        success: false,
+        message: 'Cart not found',
+      })
+      return
+    }
+    res.status(200).json({
+      success: true,
+      message: `Product ${pId} added to cart ${cId}`,
+      cart,
     })
   } catch (error) {
     console.log(error)
   }
 })
 
-export default router
+cartRouter.delete('/:cId/product/:pId', async (req, res) => {
+  const { cId } = req.params
+  const { pId } = req.params
+  try {
+    await cartsManager.deleteProductFromCart(cId, pId)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+cartRouter.delete('/:cId', async (req, res) => {
+  const { cId } = req.params
+  try {
+    await cartsManager.emptyCart(cId)
+    res.json({
+      message: 'Cart emptied successfully',
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+export default cartRouter

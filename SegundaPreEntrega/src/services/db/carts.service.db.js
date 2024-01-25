@@ -1,19 +1,12 @@
 import { cartModel } from '../../models/carts.model.js'
+import mongoose from 'mongoose'
 
 export default class CartsManager {
   async getCarts() {
     try {
       const carts = await cartModel.find().lean()
+      console.log(carts)
       return carts
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async getCartById(id) {
-    try {
-      const cart = await cartModel.findById(id).lean()
-      return cart
     } catch (error) {
       console.log(error)
     }
@@ -21,31 +14,69 @@ export default class CartsManager {
 
   async newCart() {
     try {
-      const newCart = new cartModel()
-      const result = await newCart.save()
-      return result
+      const newCart = await cartModel.create({})
+      return newCart
     } catch (error) {
       console.log(error)
     }
   }
 
-  async addProductToCart(cartId, productId) {
+  async getCartById(cId) {
     try {
-      const cart = await this.getCartById(cartId)
-      const { products } = cart
-      const productIndex = products.findIndex(product => product.product === productId)
+      const cart = await cartModel.findById(cId).lean()
+      return cart
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-      if (productIndex !== -1) {
-        products[productIndex].quantity++
+  async addProductToCart(cId, pId) {
+    try {
+      const productExistsInCart = await cartModel.exists({ _id: cId, 'products.product': pId })
+      let cart
+      if (!productExistsInCart) {
+        cart = await cartModel
+          .findByIdAndUpdate(
+            cId,
+            { $push: { products: { product: pId, quantity: 1 } } },
+            { new: true }
+          )
+          .lean()
       } else {
-        products.push({
-          product: productId,
-          quantity: 1,
-        })
+        cart = await cartModel
+          .findOneAndUpdate(
+            { _id: cId, 'products.product': pId },
+            { $inc: { 'products.$.quantity': 1 } },
+            { new: true }
+          )
+          .lean()
       }
-      const updatedCart = await cartModel.findByIdAndUpdate(cartId, { products }, { new: true })
-      const result = await updatedCart.save()
-      return result
+
+      return cart
+    } catch (error) {
+      console.log('Error in addProductToCart:', error)
+      throw error
+    }
+  }
+
+  async deleteProductFromCart(cId, pId) {
+    try {
+      const cart = await cartModel
+        .findByIdAndUpdate(cId, { $pull: { products: { product: pId } } }, { new: true })
+        .lean()
+
+      return cart
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async emptyCart(cId) {
+    try {
+      const cart = await cartModel
+        .findByIdAndUpdate(cId, { $set: { products: [] } }, { new: true })
+        .lean()
+      return cart
     } catch (error) {
       console.log(error)
     }
