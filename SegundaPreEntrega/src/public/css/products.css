@@ -1,15 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  min-height: 100dvh;
-  background-color: #121212;
-  color: white;
-  font-family: 'Inter';
-}
-
 h1 {
   height: 100px;
   display: flex;
@@ -41,14 +29,8 @@ h1 {
   flex: 1;
 }
 
-.add-to-cart-button {
-  background-color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.add-to-cart-button:hover {
-  cursor: pointer;
-  background-color: rgb(218, 218, 218);
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,0 +1,33 @@
+:root {
+  --dark-red: #ae2617; /* Primary accent color */
+  --pale-green: #cae1b8; /* Secondary accent color */
+  --dark-gray: #1c1c1c; /* Dark background color */
+  --darker-green: #405d27; /* A darker green for main content area */
+  --white: #fff; /* White text for contrast */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--dark-gray);
+  color: var(--white);
+  font-family: 'Inter';
+}
+
+button {
+  background-color: var(--dark-red);
+  color: var(--white);
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4d0e07;
+}

@@ -26,9 +26,20 @@ viewsRouter.get('/products', async (req, res) => {
     }
     const productsManager = new ProductsManager()
     const data = await productsManager.getProducts(filter)
-    const products = data.docs
+    const { docs, hasPrevPage, prevPage, hasNextPage, nextPage, totalPages } = data
+    const products = docs
 
-    res.render('products', { title: 'Products', products, style: 'css/products.css' })
+    console.log(data)
+    res.render('products', {
+      title: 'Products',
+      products,
+      hasPrevPage,
+      prevPage,
+      hasNextPage,
+      nextPage,
+      totalPages,
+      style: 'css/products.css',
+    })
   } catch (error) {
     console.log(error)
     res.status(500).send(error)
