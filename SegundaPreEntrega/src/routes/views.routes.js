@@ -5,6 +5,10 @@ import ChatService from '../services/db/chat.service.db.js'
 
 const viewsRouter = Router()
 
+viewsRouter.get('/', async (req, res) => {
+  res.render('index', { title: 'Home' })
+})
+
 viewsRouter.get('/products', async (req, res) => {
   try {
     const { limit = 10, page = 1, sort, category } = req.query
@@ -29,7 +33,8 @@ viewsRouter.get('/products', async (req, res) => {
     const { docs, hasPrevPage, prevPage, hasNextPage, nextPage, totalPages } = data
     const products = docs
 
-    console.log(data)
+    const currentPage = data.page
+
     res.render('products', {
       title: 'Products',
       products,
@@ -38,6 +43,7 @@ viewsRouter.get('/products', async (req, res) => {
       hasNextPage,
       nextPage,
       totalPages,
+      currentPage,
       style: 'css/products.css',
     })
   } catch (error) {
@@ -52,7 +58,6 @@ viewsRouter.get('/cart/:cId', async (req, res) => {
     const cartManager = new CartsManager()
     const cart = await cartManager.getCartById(cId)
     const { products } = cart
-    console.log(products)
 
     res.render('cart', { title: 'Cart', products, style: '/css/cart.css' })
   } catch (error) {

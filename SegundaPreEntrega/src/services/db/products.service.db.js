@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 export default class ProductsManager {
   async getProducts(filter) {
     try {
-      console.log(filter)
       filter.options.lean = true
       const products = await productModel.paginate(filter.query, filter.options)
 

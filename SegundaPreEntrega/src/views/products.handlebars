@@ -1,12 +1,23 @@
 <h1>Products</h1>
-
 <div class='pagination'>
   {{#if hasPrevPage}}
-    <a href='/products?page={{prevPage}}'><button>Previous Page</button></a>
+    <a href='/products?page={{prevPage}}'><button><i
+          class='fa-solid fa-arrow-left-long'
+        ></i></button></a>
+  {{else}}
+    <button disabled class='pagination-button-disabled'><i class='fa-solid fa-ban'></i></button>
   {{/if}}
 
+  <div class='page'>
+    {{currentPage}}
+  </div>
+
   {{#if hasNextPage}}
-    <a href='/products?page={{nextPage}}'><button>Next Page</button></a>
+    <a href='/products?page={{nextPage}}'><button><i
+          class='fa-solid fa-arrow-right-long'
+        ></i></button></a>
+  {{else}}
+    <button disabled class='pagination-button-disabled'><i class='fa-solid fa-ban'></i></button>
   {{/if}}
 </div>
 
