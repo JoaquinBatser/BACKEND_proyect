@@ -1,4 +1,5 @@
 import { cartModel } from '../../models/carts.model.js'
+import { ticketModel } from '../../models/ticket.model.js'
 import mongoose from 'mongoose'
 
 export default class CartsManager {
@@ -32,7 +33,10 @@ export default class CartsManager {
 
   async addProductToCart(cId, pId) {
     try {
-      const productExistsInCart = await cartModel.exists({ _id: cId, 'products.product': pId })
+      const productExistsInCart = await cartModel.exists({
+        _id: cId,
+        'products.product': pId,
+      })
       let cart
       if (!productExistsInCart) {
         cart = await cartModel
@@ -61,7 +65,10 @@ export default class CartsManager {
 
   async updateProductQuantity(cId, pId, quantity) {
     try {
-      const productExistsInCart = await cartModel.exists({ _id: cId, 'products.product': pId })
+      const productExistsInCart = await cartModel.exists({
+        _id: cId,
+        'products.product': pId,
+      })
 
       if (!productExistsInCart) {
         throw new Error('Product not found in cart')
@@ -83,7 +90,11 @@ export default class CartsManager {
   async deleteProductFromCart(cId, pId) {
     try {
       const cart = await cartModel
-        .findByIdAndUpdate(cId, { $pull: { products: { product: pId } } }, { new: true })
+        .findByIdAndUpdate(
+          cId,
+          { $pull: { products: { product: pId } } },
+          { new: true }
+        )
         .lean()
 
       return cart
@@ -98,6 +109,16 @@ export default class CartsManager {
         .findByIdAndUpdate(cId, { $set: { products: [] } }, { new: true })
         .lean()
       return cart
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async newTicket(ticketData) {
+    try {
+      const newTicket = new ticketModel(ticketData)
+      const result = await newTicket.save()
+      return result
     } catch (error) {
       console.log(error)
     }

@@ -119,11 +119,42 @@ const emptyCart = async (req, res) => {
 
 const purchaseCart = async (req, res) => {
   const { cId } = req.params
+  const { purchaser } = req.body
+  const code = Math.random().toString(36).substring(2, 15)
+
   try {
-    await cartsManager.purchaseCart(cId)
-    res.json({
-      message: 'Cart purchased successfully',
+    const cart = await cartsManager.getCartById(cId)
+
+    if (!cart) {
+      res.status(404).json({
+        success: false,
+        message: 'Cart not found',
+      })
+      return
+    }
+    let totalPrice = 0
+    const { products } = cart
+
+    for (let i = 0; i < products.length; i++) {
+      totalPrice += products[i].product.price * products[i].quantity
+    }
+    const newTicket = await cartsManager.newTicket({
+      purchaser,
+      code,
+      amount: totalPrice,
     })
+    const ticket = {
+      newTicket,
+      cart,
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Cart ${cId} purchased by ${purchaser}`,
+      ticketData: ticket,
+    })
+
+    await cartsManager.emptyCart(cId)
   } catch (error) {
     console.log(error)
   }
