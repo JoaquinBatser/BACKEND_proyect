@@ -56,8 +56,10 @@ const githubCallback = async (req, res) => {
 
 const currentUser = async (req, res) => {
   try {
+    console.log('req;;;;;;;', req.session)
     const id = req.session.passport.user
     const user = await userManager.getUserById(id)
+    console.log('userloged::::::::', user)
 
     if (!user.success) {
       res.json({

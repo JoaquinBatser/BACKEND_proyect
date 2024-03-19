@@ -7,6 +7,8 @@ cartRouter.get('/', cartsController.getCart)
 
 cartRouter.get('/:cId', cartsController.getCartById)
 
+cartRouter.get('/:cId/purchase', cartsController.purchaseCart)
+
 cartRouter.post('/', cartsController.createCart)
 
 cartRouter.post('/:cId/product/:pId', cartsController.addProductToCart)

@@ -1,15 +1,9 @@
 import { NavLink } from 'react-router-dom'
 import React, { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import ProductList from '../products/ProductList'
-import Home from '../../../pages/Home'
-import Profile from '../../../pages/Profile'
-import UserContext from '../../context/UserContext'
 
-const NavBar = ({ data }) => {
-  const { isAuthenticated, user } = useContext(UserContext)
-
+const NavBar = ({ data, user, isAdmin }) => {
   const { products } = data
+  console.log(user)
 
   const categories = [...new Set(products.map((product) => product.category))]
 
@@ -18,7 +12,13 @@ const NavBar = ({ data }) => {
       <NavLink to={'/'}>
         <p>TITLE</p>
       </NavLink>
-      <NavLink to="/cart">Cart</NavLink>
+
+      {!isAdmin && (
+        <div>
+          <NavLink to="/cart">Cart</NavLink>
+          <NavLink to="/chat">Chat</NavLink>
+        </div>
+      )}
 
       {categories.map((category) => {
         return (
@@ -27,15 +27,17 @@ const NavBar = ({ data }) => {
           </NavLink>
         )
       })}
-      {!isAuthenticated && (
-        <>
-          <NavLink to="/login">Login</NavLink>
-          <NavLink to="/signup">Signup</NavLink>
-        </>
-      )}
-      {isAuthenticated && (
-        <NavLink to="/profile">{user.first_name}</NavLink> // Example for authenticated user link
-      )}
+      <div>
+        {user ? (
+          <NavLink to="/profile">{user.first_name}</NavLink>
+        ) : (
+          <div>
+            <NavLink to="/login">Login</NavLink>
+            <NavLink to="/signup">Signup</NavLink>
+          </div>
+        )}
+      </div>
+      {user && isAdmin ? <p>Admin</p> : null}
     </nav>
   )
 }

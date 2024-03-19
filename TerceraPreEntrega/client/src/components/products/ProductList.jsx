@@ -1,6 +1,7 @@
 import React from 'react'
+import ProductCard from './ProductCard'
 
-const ProductList = ({ products, category }) => {
+const ProductList = ({ products, category, isAdmin }) => {
   const filteredProducts = category
     ? products.filter((product) => product.category === category)
     : products
@@ -8,12 +9,7 @@ const ProductList = ({ products, category }) => {
   return (
     <ul className="products-list">
       {filteredProducts.map((product) => (
-        <li key={product.id}>
-          <h2>{product.name}</h2>
-          <p>{product.category}</p>
-          <p>{product.description}</p>
-          <img src={product.image} alt={product.name} />
-        </li>
+        <ProductCard key={product.id} product={product} isAdmin={isAdmin} />
       ))}
     </ul>
   )

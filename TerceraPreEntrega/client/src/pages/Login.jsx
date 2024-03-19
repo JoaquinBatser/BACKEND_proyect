@@ -1,36 +1,40 @@
 import React, { useContext, useState } from 'react'
-import { getUser } from '../src/api/fetch'
-import UserContext from '../src/context/UserContext'
+import { getUser } from '../api/fetch'
+import { loginUser } from '../api/fetch'
 import { useNavigate } from 'react-router-dom'
 
-const Login = () => {
-  const { login } = useContext(UserContext)
-  const [user, setUser] = useState('')
+const Login = ({ setUser, setIsAdmin }) => {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const loginUser = async (e) => {
+  const logUser = async (e) => {
     e.preventDefault()
-    const loginUser = { user: user, password: password }
-    const fetchUser = await getUser({ loginUser })
-    console.log(fetchUser)
+
+    const userData = { email, password }
+    const fetchUser = await loginUser({ userData })
     if (fetchUser.data.success) {
-      login(fetchUser.data.user)
+      setUser(fetchUser.data.user)
+      if (fetchUser.data.user.role === 'admin') {
+        setIsAdmin(true)
+      }
+      navigate('/')
+    } else {
+      console.log('NUUH')
     }
-    fetchUser.data.success ? navigate('/') : console.log('NUUH')
   }
 
   return (
-    <form id="signup-html" onSubmit={loginUser}>
+    <form id="signup-html" onSubmit={logUser}>
       <h2>Login</h2>
       <div>
-        <label htmlFor="user">user:</label>
+        <label htmlFor="email">user:</label>
         <input
           type="text"
-          id="user"
-          name="user"
+          id="email"
+          name="email"
           onChange={(e) => {
-            setUser(e.target.value)
+            setEmail(e.target.value)
           }}
         />
       </div>

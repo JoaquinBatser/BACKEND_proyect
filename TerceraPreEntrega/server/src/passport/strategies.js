@@ -15,9 +15,15 @@ const signup = async (req, email, password, done) => {
     const data = await userManager.addUser(req.body)
 
     if (!data.success) {
-      return done(null, data.user, { message: data.message, success: data.success })
+      return done(null, data.user, {
+        message: data.message,
+        success: data.success,
+      })
     } else {
-      return done(null, data.user, { message: data.message, success: data.success })
+      return done(null, data.user, {
+        message: data.message,
+        success: data.success,
+      })
     }
   } catch (error) {
     return done(null, false)
@@ -29,7 +35,8 @@ const login = async (req, email, password, done) => {
     const user = { email, password }
     const userLogin = await userManager.loginUser(user)
     console.log('login', userLogin)
-    if (!userLogin.success) return done(null, false, { message: 'User not found' })
+    if (!userLogin.success)
+      return done(null, false, { message: 'User not found' })
 
     return done(null, userLogin.foundUser)
   } catch (error) {}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { singupUser } from '../src/api/fetch'
+import { singupUser } from '../api/fetch'
 import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {

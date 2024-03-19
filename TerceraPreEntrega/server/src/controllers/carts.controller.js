@@ -117,6 +117,18 @@ const emptyCart = async (req, res) => {
   }
 }
 
+const purchaseCart = async (req, res) => {
+  const { cId } = req.params
+  try {
+    await cartsManager.purchaseCart(cId)
+    res.json({
+      message: 'Cart purchased successfully',
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export default {
   getCart,
   getCartById,
@@ -125,4 +137,5 @@ export default {
   updateProductQuantity,
   deleteProductFromCart,
   emptyCart,
+  purchaseCart,
 }

@@ -4,10 +4,12 @@ const chatService = new ChatService()
 
 const createMessage = async (req, res) => {
   try {
-    const { user, message } = req.body
-    const newMessage = await chatService.createMessage({ user, message })
+    const { chatUser, message } = req.body
+    const newMessage = await chatService.createMessage({ chatUser, message })
     if (!newMessage) {
-      return res.status(400).json({ success: false, error: 'Error creating message' })
+      return res
+        .status(400)
+        .json({ success: false, error: 'Error creating message' })
     }
     req.io.emit('newMessage', newMessage)
 

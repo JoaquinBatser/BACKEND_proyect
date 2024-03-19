@@ -22,6 +22,19 @@ export const singupUser = async ({ newUser }) => {
   }
 }
 
+export const loginUser = async ({ userData }) => {
+  try {
+    const data = await axios.post('/api/sessions/login', userData)
+    return data
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      console.error('Unauthorized access:', error.message)
+    } else {
+      console.error('Other Axios error:', error.message)
+    }
+  }
+}
+
 export const getUser = async () => {
   try {
     const data = await axios.get('/api/sessions/current')
@@ -34,6 +47,35 @@ export const getUser = async () => {
 export const createCart = async () => {
   try {
     const data = await axios.post('/api/carts')
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getCart = async () => {
+  try {
+    const data = await axios.get('/api/carts/65f8c3f6c77a348bcd692740')
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const addProductToCart = async (productId) => {
+  try {
+    const data = await axios.post(
+      `api/carts/65f8c3f6c77a348bcd692740/product/${productId}/`
+    )
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const sendSocketMessage = async ({ messageData }) => {
+  try {
+    const data = await axios.post('/api/chat', messageData)
     return data
   } catch (error) {
     console.log(error)
