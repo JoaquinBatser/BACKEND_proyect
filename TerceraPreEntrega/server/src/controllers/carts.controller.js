@@ -1,5 +1,7 @@
 import CartsManager from '../services/db/carts.service.db.js'
+import ProductsManager from '../services/db/products.service.db.js'
 const cartsManager = new CartsManager()
+const productsManager = new ProductsManager()
 
 const getCart = async (req, res) => {
   try {
@@ -136,6 +138,36 @@ const purchaseCart = async (req, res) => {
     const { products } = cart
 
     for (let i = 0; i < products.length; i++) {
+      const product = products[i].product
+      const quantity = products[i].quantity
+      const stock = product.stock
+      const pId = product._id.toString()
+
+      console.log('------------')
+      console.log('product:', product)
+      console.log('pId:', pId)
+      console.log('quantity:', quantity)
+      console.log('stock:', stock)
+
+      if (quantity > stock) {
+        res.status(400).json({
+          success: false,
+          message: `Product ${product._id} quantity exceeds stock`,
+        })
+        return
+      }
+      const updatedStock = stock - quantity
+      const productUpdate = {
+        stock: updatedStock,
+      }
+      const updatedProduct = await productsManager.updateProduct(
+        pId,
+        productUpdate
+      )
+      console.log('updatedProduct:', updatedProduct)
+    }
+
+    for (let i = 0; i < products.length; i++) {
       totalPrice += products[i].product.price * products[i].quantity
     }
     const newTicket = await cartsManager.newTicket({
@@ -154,7 +186,8 @@ const purchaseCart = async (req, res) => {
       ticketData: ticket,
     })
 
-    await cartsManager.emptyCart(cId)
+    // await cartsManager.emptyCart(cId)
+    totalPrice = 0
   } catch (error) {
     console.log(error)
   }
