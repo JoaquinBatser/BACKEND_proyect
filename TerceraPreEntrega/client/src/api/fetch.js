@@ -81,3 +81,21 @@ export const sendSocketMessage = async ({ messageData }) => {
     console.log(error)
   }
 }
+
+export const getMessages = async () => {
+  try {
+    const data = await axios.get('/api/chat')
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const emptyCart = async () => {
+  try {
+    const data = await axios.delete('/api/carts/65f8c3f6c77a348bcd692740')
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}

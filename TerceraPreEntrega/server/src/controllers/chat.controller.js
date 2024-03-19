@@ -19,4 +19,19 @@ const createMessage = async (req, res) => {
   }
 }
 
-export default { createMessage }
+const getMessages = async (req, res) => {
+  try {
+    const messages = await chatService.findMessages()
+    console.log('measdasd', messages)
+    if (!messages) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'Error fetching messages' })
+    }
+    return res.status(200).json({ success: true, data: messages })
+  } catch (error) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
+
+export default { createMessage, getMessages }

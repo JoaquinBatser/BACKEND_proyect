@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import CartItems from '../components/Cart/CartItems'
-import { getUser } from '../api/fetch'
+import { getCart, getUser } from '../api/fetch'
+import { emptyCart } from '../api/fetch'
 
 const Cart = () => {
   const [cartData, setCartData] = useState([])
@@ -10,9 +11,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const cartResponse = await axios.get(
-          '/api/carts/65f8c3f6c77a348bcd692740'
-        )
+        const cartResponse = await getCart()
         setCartData(cartResponse.data)
         setCartProducts(cartResponse.data.data.products)
       } catch (error) {
@@ -22,10 +21,12 @@ const Cart = () => {
     fetchCart()
   }, [])
 
-  const getCurrentUser = async () => {
+  const emptyThisCart = async () => {
     try {
-      const data = await getUser()
-      console.log(data)
+      await emptyCart()
+      const cartResponse = await getCart()
+      setCartData(cartResponse.data)
+      setCartProducts(cartResponse.data.data.products)
     } catch (error) {
       console.log(error)
     }
@@ -33,10 +34,10 @@ const Cart = () => {
 
   return (
     <>
+      <h1>Cart</h1>
+      <button onClick={emptyThisCart}>empty</button>
       {cartData.status ? (
         <div>
-          <h1>Cart</h1>
-          <button onClick={getCurrentUser}>a</button>
           {cartProducts.map((product) => (
             <CartItems product={product} />
           ))}

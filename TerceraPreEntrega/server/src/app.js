@@ -26,6 +26,7 @@ app.use(
   cors({
     origin: `http://localhost:5173`,
     credentials: true,
+    methods: ['GET', 'POST', 'DELETE'],
   })
 )
 
@@ -33,7 +34,12 @@ const server = app.listen(PORT, () => {
   console.log(`Server running on port http://localhost:${PORT} 🏃 `)
 })
 
-const io = new Server(server)
+const io = new Server(server, {
+  cors: {
+    origin: `http://localhost:5173`,
+    methods: ['GET', 'POST', 'DELETE'],
+  },
+})
 
 io.on('connection', (socket) => {
   console.log('New client connected')
