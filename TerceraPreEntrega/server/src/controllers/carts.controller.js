@@ -1,7 +1,9 @@
+import repositories from '../repositories/index.js'
 import CartsManager from '../services/db/carts.service.db.js'
 import ProductsManager from '../services/db/products.service.db.js'
-const cartsManager = new CartsManager()
-const productsManager = new ProductsManager()
+
+const cartsManager = new CartsManager(repositories.carts)
+const productsManager = new ProductsManager(repositories.products)
 
 const getCart = async (req, res) => {
   try {

@@ -24,6 +24,7 @@ function App() {
     const fetchData = async () => {
       try {
         const productsResponse = await fetchProducts()
+
         setData(productsResponse.data)
       } catch (error) {}
     }

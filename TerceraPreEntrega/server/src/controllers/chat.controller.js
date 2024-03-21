@@ -1,6 +1,7 @@
+import repositories from '../repositories/index.js'
 import ChatService from '../services/db/chat.service.db.js'
 
-const chatService = new ChatService()
+const chatService = new ChatService(repositories.messages)
 
 const createMessage = async (req, res) => {
   try {

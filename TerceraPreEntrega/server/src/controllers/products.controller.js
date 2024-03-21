@@ -1,6 +1,7 @@
-import ProductManager from '../services/db/products.service.db.js'
+import ProductsManager from '../services/db/products.service.db.js'
+import repositories from '../repositories/index.js'
 
-const productManager = new ProductManager()
+const productManager = new ProductsManager(repositories.products)
 
 const getProducts = async (req, res) => {
   try {

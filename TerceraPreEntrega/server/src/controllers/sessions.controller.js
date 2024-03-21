@@ -1,5 +1,7 @@
+import repositories from '../repositories/index.js'
 import UserManager from '../services/db/users.service.db.js'
-const userManager = new UserManager()
+
+const userManager = new UserManager(repositories.users)
 
 const signup = async (req, res) => {
   try {

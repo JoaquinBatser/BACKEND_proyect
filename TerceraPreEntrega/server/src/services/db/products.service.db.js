@@ -1,11 +1,13 @@
 import { productModel } from '../../models/products.model.js'
 import mongoose from 'mongoose'
 export default class ProductsManager {
+  constructor(repo) {
+    this.repo = repo
+  }
   async getProducts(filter) {
     try {
       filter.options.lean = true
       const products = await productModel.paginate(filter.query, filter.options)
-
       return products
     } catch (error) {
       console.log(error)
@@ -14,7 +16,7 @@ export default class ProductsManager {
 
   async getProductById(id) {
     try {
-      const product = await productModel.findById(id).lean()
+      const product = await this.repo.getById(id)
       return !product
         ? { success: false, message: 'Product not found' }
         : { success: true, message: 'Product found', product }
@@ -29,9 +31,8 @@ export default class ProductsManager {
 
   async addProduct(product) {
     try {
-      const newProduct = new productModel(product)
-      const result = await newProduct.save()
-      return result
+      const newProduct = await this.repo.add(product)
+      return newProduct
     } catch (error) {
       console.log(error)
     }
@@ -39,7 +40,7 @@ export default class ProductsManager {
 
   async updateProduct(id, productUpdate) {
     try {
-      const product = await productModel.findByIdAndUpdate(id, productUpdate, { new: true }).lean()
+      const product = this.repo.update(id, productUpdate)
       return !product
         ? { success: false, message: 'Product not found' }
         : { success: true, message: 'Product updated', product }
@@ -54,7 +55,7 @@ export default class ProductsManager {
 
   async deleteProduct(id) {
     try {
-      const product = await productModel.findByIdAndDelete(id).lean()
+      const product = await this.repo.delete(id)
       return !product
         ? { success: false, message: 'Product not found' }
         : { success: true, message: 'Product deleted successfully', product }

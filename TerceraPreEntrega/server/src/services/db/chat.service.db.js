@@ -1,9 +1,12 @@
 import { messageModel } from '../../models/messages.model.js'
 
 export default class ChatService {
+  constructor(repo) {
+    this.repo = repo
+  }
   async createMessage(message) {
     try {
-      const newMessage = await messageModel.create(message)
+      const newMessage = await this.repo.create(message)
       return newMessage
     } catch (error) {
       console.log(error)
@@ -11,7 +14,7 @@ export default class ChatService {
   }
   async findMessages() {
     try {
-      const messages = await messageModel.find().lean()
+      const messages = await this.repo.get()
       return messages
     } catch (error) {
       console.log(error)

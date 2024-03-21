@@ -53,9 +53,9 @@ export const createCart = async () => {
   }
 }
 
-export const getCart = async () => {
+export const getCart = async ({ cartId }) => {
   try {
-    const data = await axios.get('/api/carts/65f8c3f6c77a348bcd692740')
+    const data = await axios.get(`/api/carts/${cartId}`)
     return data
   } catch (error) {
     console.log(error)

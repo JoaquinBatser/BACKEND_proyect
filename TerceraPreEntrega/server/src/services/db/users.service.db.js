@@ -3,25 +3,12 @@ import mongoose from 'mongoose'
 import { createHash, isValidPassword } from '../../utils.js'
 
 export default class usersManager {
+  constructor(repo) {
+    this.repo = repo
+  }
   async addUser(user) {
     try {
-      const { email, password } = user
-      let newUser
-
-      if (email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-        newUser = await userModel.create({
-          ...user,
-          password: createHash(password),
-          role: 'admin',
-        })
-      } else {
-        newUser = await userModel.create({
-          ...user,
-          password: createHash(password),
-          role: 'user',
-        })
-      }
-
+      const newUser = await this.repo.add(user)
       return !newUser
         ? { success: false, message: 'Problem adding new user', user: false }
         : { success: true, message: 'User added', user: newUser }
@@ -47,9 +34,8 @@ export default class usersManager {
 
   async loginUser({ email, password }) {
     try {
-      const user = await userModel.findOne({ email })
-      const isValid = isValidPassword(user, password)
-      return user && isValid
+      const login = await this.repo.login({ email, password })
+      return login
         ? { success: true, message: 'Successful Login', foundUser: user }
         : { success: false, message: 'Invalid credentials' }
     } catch (error) {
@@ -59,7 +45,7 @@ export default class usersManager {
 
   async getByEmail(email) {
     try {
-      const user = await userModel.findOne({ email })
+      const user = await this.repo.getByEmail(email)
       return user
         ? { success: true, user }
         : { success: false, message: 'User not found' }
@@ -70,7 +56,7 @@ export default class usersManager {
 
   async getUserById(id) {
     try {
-      const user = await userModel.findById(id)
+      const user = await this.repo.getById(id)
       return user
         ? { success: true, user }
         : { success: false, message: 'User not found' }
