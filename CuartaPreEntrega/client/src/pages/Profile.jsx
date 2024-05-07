@@ -12,6 +12,7 @@ const Profile = () => {
       <p>{user.first_name}</p>
       <p>{user.last_name}</p>
       <p>{user.email}</p>
+      <NavLink to="/newProduct">Add product</NavLink>
 
       <Documents />
     </div>
