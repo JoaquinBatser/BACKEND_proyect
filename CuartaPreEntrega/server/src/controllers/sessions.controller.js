@@ -167,7 +167,11 @@ const changeRole = async (req, res, next) => {
     next(error.message)
   }
 }
-const uploadDocument = async (req, res, next) => {}
+const uploadDocument = async (req, res, next) => {
+  console.log(req.file)
+
+  res.status(200).json({ message: 'se subio el archivo' })
+}
 
 export default {
   signup,

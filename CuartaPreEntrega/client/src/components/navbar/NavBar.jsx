@@ -10,7 +10,7 @@ const NavBar = () => {
   console.log('user', user)
 
   return (
-    <nav>
+    <nav className="flex">
       <NavLink to={'/'}>O</NavLink>
 
       <div>
@@ -33,6 +33,7 @@ const NavBar = () => {
             <NavLink to="/cart">👜</NavLink>
           </div>
         </div>
+        <NavLink to="/newProduct">Add product</NavLink>
       </div>
     </nav>
   )

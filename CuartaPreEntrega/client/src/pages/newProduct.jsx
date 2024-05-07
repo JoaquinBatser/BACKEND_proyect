@@ -26,6 +26,7 @@ const NewProduct = () => {
 
     const productResponse = await addNewProduct(newProduct)
 
+    console.log(productResponse.data)
     if (productResponse.data.productData.success) {
       setProduct(productResponse.data.productData.product)
     }
@@ -78,11 +79,11 @@ const NewProduct = () => {
         <label htmlFor="thumbnail">Thumbnail</label>
         <input
           onChange={(e) => {
-            setThumbnail(e.target.value)
+            setThumbnail(e.target.files[0])
           }}
-          type="text"
+          type="file"
           id="thumbnail"
-          name="thumbnail"
+          name="productImg"
           placeholder="Thumbnail"
         />
         <label htmlFor="code">Code</label>
