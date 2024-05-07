@@ -33,8 +33,8 @@ const NewProduct = () => {
     console.log(productResponse)
   }
   return (
-    <section className="flex flex-col py-20 justify-center items-center">
-      <form onSubmit={addProduct} className="flex flex-col gap-4 w-1/4">
+    <section>
+      <form onSubmit={addProduct}>
         <label htmlFor="title">Title</label>
         <input
           onChange={(e) => {
@@ -44,7 +44,6 @@ const NewProduct = () => {
           id="title"
           name="title"
           placeholder="Title"
-          className="p-2 border border-neutral-300"
         />
         <label htmlFor="description">Description</label>
         <input
@@ -55,7 +54,6 @@ const NewProduct = () => {
           id="description"
           name="description"
           placeholder="Description"
-          className="p-2 border border-neutral-300"
         />
         <label htmlFor="price">Price</label>
         <input
@@ -66,7 +64,6 @@ const NewProduct = () => {
           id="price"
           name="price"
           placeholder="Price"
-          className="p-2 border border-neutral-300"
         />
         <label htmlFor="category">Category</label>
         <input
@@ -77,7 +74,6 @@ const NewProduct = () => {
           id="category"
           name="category"
           placeholder="Category"
-          className="p-2 border border-neutral-300"
         />
         <label htmlFor="thumbnail">Thumbnail</label>
         <input
@@ -88,7 +84,6 @@ const NewProduct = () => {
           id="thumbnail"
           name="thumbnail"
           placeholder="Thumbnail"
-          className="p-2 border border-neutral-300"
         />
         <label htmlFor="code">Code</label>
         <input
@@ -99,7 +94,6 @@ const NewProduct = () => {
           id="code"
           name="code"
           placeholder="Code"
-          className="p-2 border border-neutral-300"
         />
         <label htmlFor="stock">Stock</label>
         <input
@@ -110,11 +104,8 @@ const NewProduct = () => {
           id="stock"
           name="stock"
           placeholder="Stock"
-          className="p-2 border border-neutral-300"
         />
-        <button className="bg-primary-400 text-white p-2 rounded-md">
-          Add product
-        </button>
+        <button>Add product</button>
       </form>
       {product && (
         <div>

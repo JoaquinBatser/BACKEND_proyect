@@ -19,7 +19,7 @@ const ProductDetail = () => {
     fetchProduct()
   }, [])
   return (
-    <div className="border p-10 bg-neutral-200 w-fit mx-auto mt-12">
+    <div>
       <h3>{product.title}</h3>
       <p>{product.category}</p>
       <p>{product.description}</p>

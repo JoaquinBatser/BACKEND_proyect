@@ -35,16 +35,11 @@ const Login = () => {
   }
 
   return (
-    <section className=" w-[1200px] mx-auto pt-16">
-      <form id="signup-html" onSubmit={logUser} className="mt-8 border p-12">
-        <h2 className="block text-gray-700 text-lg font-bold mb-2">Login</h2>
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            User:
-          </label>
+    <section>
+      <form id="signup-html" onSubmit={logUser}>
+        <h2>Login</h2>
+        <div>
+          <label htmlFor="email">User:</label>
           <input
             type="text"
             id="email"
@@ -52,17 +47,11 @@ const Login = () => {
             onChange={(e) => {
               setEmail(e.target.value)
             }}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
 
-        <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="block text-gray-700 text-sm font-bold mb-2"
-          >
-            Contraseña:
-          </label>
+        <div>
+          <label htmlFor="password">Contraseña:</label>
           <input
             type="password"
             id="password"
@@ -70,17 +59,10 @@ const Login = () => {
             onChange={(e) => {
               setPassword(e.target.value)
             }}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           />
           <button onClick={ForgotPassword}>Forgot password?</button>
         </div>
-        <button
-          id="signup"
-          type="submit"
-          className="bg-neutral-500 hover:bg-neutral-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Login
-        </button>
+        <button type="submit">Login</button>
       </form>
     </section>
   )

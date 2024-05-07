@@ -23,7 +23,7 @@ const ProductListContainer = () => {
   return (
     <div>
       {productsData.success ? (
-        <section className="w-[1200px] mx-auto pt-16">
+        <section>
           <select onChange={(e) => setCategory(e.target.value)}>
             <option value="">Select a category</option>
             <option value="Audio">Audio</option>

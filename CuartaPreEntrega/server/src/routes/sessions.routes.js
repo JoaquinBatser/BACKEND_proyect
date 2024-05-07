@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import sessionsController from '../controllers/sessions.controller.js'
 import passport from 'passport'
+import uploader from '../middlewares/multer.js'
 
 const sessionsRouter = Router()
 
@@ -37,5 +38,11 @@ sessionsRouter.get(
 sessionsRouter.put('/password/change/:token', sessionsController.updatePassword)
 
 sessionsRouter.get('/premium/:uId', sessionsController.changeRole)
+
+sessionsRouter.post(
+  '/:uId/documents',
+  uploader.single('file'),
+  sessionsController.uploadDocument
+)
 
 export default sessionsRouter

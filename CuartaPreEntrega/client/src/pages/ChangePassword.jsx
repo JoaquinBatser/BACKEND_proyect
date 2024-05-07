@@ -17,7 +17,7 @@ const ChangePassword = () => {
   }
 
   return (
-    <div className="pt-20">
+    <div>
       <form>
         <input
           type="text"

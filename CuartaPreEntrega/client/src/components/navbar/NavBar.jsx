@@ -10,10 +10,10 @@ const NavBar = () => {
   console.log('user', user)
 
   return (
-    <nav className="flex justify-between fixed h-14 items-center  w-full border-neutral-400 border-b px-8 z-12 ">
+    <nav>
       <NavLink to={'/'}>O</NavLink>
 
-      <div className="flex items-center gap-4">
+      <div>
         {user ? (
           <>
             <NavLink to="/profile">{user.first_name}</NavLink>
@@ -22,13 +22,13 @@ const NavBar = () => {
             )}
           </>
         ) : (
-          <div className="flex gap-2">
+          <div>
             <NavLink to="/login">Login</NavLink>
             <NavLink to="/signup">Signup</NavLink>
           </div>
         )}
 
-        <div className="flex gap-4 items-center">
+        <div>
           <div>
             <NavLink to="/cart">👜</NavLink>
           </div>

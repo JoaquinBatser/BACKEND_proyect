@@ -159,3 +159,12 @@ export const emptyCart = async () => {
     console.log(error)
   }
 }
+
+export const uploadDocs = async ({ docs, uId }) => {
+  try {
+    const data = await axios.post(`/api/users/${uId}/documents`, docs)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}

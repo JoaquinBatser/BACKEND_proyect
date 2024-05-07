@@ -167,6 +167,7 @@ const changeRole = async (req, res, next) => {
     next(error.message)
   }
 }
+const uploadDocument = async (req, res, next) => {}
 
 export default {
   signup,
@@ -176,4 +177,5 @@ export default {
   updatePassword,
   sendPasswordResetEmail,
   changeRole,
+  uploadDocument,
 }

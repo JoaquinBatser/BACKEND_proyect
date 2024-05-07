@@ -11,8 +11,12 @@ export default class UsersManager {
   async addUser(user) {
     try {
       const repoResponse = await this.repo.add(user)
-      
-      return { success: repoResponse.success, message: repoResponse.message, user: repoResponse.newUser }
+
+      return {
+        success: repoResponse.success,
+        message: repoResponse.message,
+        user: repoResponse.newUser,
+      }
     } catch (error) {
       if (
         error.code === 11000 &&
@@ -36,7 +40,11 @@ export default class UsersManager {
   async loginUser({ email, password }) {
     try {
       const repoResponse = await this.repo.login({ email, password })
-      return { success: repoResponse.success, message: repoResponse.success, foundUser: repoResponse.user }
+      return {
+        success: repoResponse.success,
+        message: repoResponse.success,
+        foundUser: repoResponse.user,
+      }
     } catch (error) {
       return { success: false, message: error, user: false }
     }
@@ -85,6 +93,17 @@ export default class UsersManager {
       return user
         ? { success: true, message: 'Role updated', user }
         : { success: false, message: 'Could not update role' }
+    } catch (error) {
+      return { success: false, message: error, user: false }
+    }
+  }
+
+  async lastConnection(uId) {
+    try {
+      const user = await this.repo.lastConnection(uId)
+      return user
+        ? { success: true, message: 'Last connection updated', user }
+        : { success: false, message: 'Could not update last connection' }
     } catch (error) {
       return { success: false, message: error, user: false }
     }

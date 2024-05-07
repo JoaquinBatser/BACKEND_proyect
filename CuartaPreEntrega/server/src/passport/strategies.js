@@ -20,10 +20,9 @@ const signup = async (req, email, password, done) => {
     const userManagerResponse = await userManager.addUser(req.body)
 
     return done(null, userManagerResponse.user, {
-        message: userManagerResponse.message,
-        success: userManagerResponse.success,
-      })
-    
+      message: userManagerResponse.message,
+      success: userManagerResponse.success,
+    })
   } catch (error) {
     console.log(error)
     return done(error)
@@ -36,7 +35,10 @@ const login = async (req, email, password, done) => {
 
     const userManagerResponse = await userManager.loginUser(user)
 
-    return done(null, userManagerResponse.foundUser, { message: userManagerResponse.message, success:userManagerResponse.success })
+    return done(null, userManagerResponse.foundUser, {
+      message: userManagerResponse.message,
+      success: userManagerResponse.success,
+    })
   } catch (error) {
     console.log(error)
     return done(error)
@@ -50,10 +52,12 @@ passport.use('signup', signupStrategy)
 passport.use('login', loginStrategy)
 
 passport.serializeUser((user, done) => {
+  userManager.lastConnection(user._id)
   done(null, user._id)
 })
 
 passport.deserializeUser(async (id, done) => {
   const user = await userManager.getUserById(id)
+  userManager.lastConnection(user._id)
   done(null, user)
 })

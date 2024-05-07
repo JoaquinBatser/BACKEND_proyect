@@ -52,32 +52,23 @@ const Chat = () => {
 
   console.log(messages)
   return (
-    <div className="w-[1200px] m-auto">
-      <h2 className="">Chat</h2>
-      <ul className=" space-y-2 mb-12">
+    <div>
+      <h2>Chat</h2>
+      <ul>
         {messages.map((messageData) => (
-          <li key={messageData.id} className="border py-2 px-4 w-fit">
-            <span className="font-bold text-neutral-900  ">
-              {messageData.chatUser}
-            </span>
-            : {messageData.message}
+          <li key={messageData.id}>
+            <span>{messageData.chatUser}</span>: {messageData.message}
           </li>
         ))}
       </ul>
-      <form onSubmit={sendMessage} className="fixed h-12 bottom-0 ">
+      <form onSubmit={sendMessage}>
         <input
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message..."
-          className=" px-4 mr-4 py-2 rounded border "
         />
-        <button
-          type="submit"
-          className="p-2 bg-blue-500 text-white rounded shadow"
-        >
-          Send
-        </button>
+        <button type="submit">Send</button>
       </form>
     </div>
   )

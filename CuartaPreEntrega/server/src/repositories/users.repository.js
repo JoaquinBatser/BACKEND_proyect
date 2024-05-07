@@ -40,10 +40,10 @@ export default class UsersRepository {
     const isValid = isValidPassword(user, password)
 
     if (!isValid) {
-      return { message: 'Invalid credentials', success:false}
+      return { message: 'Invalid credentials', success: false }
     }
-    
-    return { success:true,message:'User logged in', user}
+
+    return { success: true, message: 'User logged in', user }
   }
   async isValid(user, password) {
     return isValidPassword(user, password)
@@ -70,6 +70,12 @@ export default class UsersRepository {
       { _id: id },
       { $set: { role: newRole } },
       { new: true }
+    )
+  }
+  async lastConnection(uId) {
+    return await this.userModel.updateOne(
+      { _id: uId },
+      { $set: { last_connection: Date.now() } }
     )
   }
 }
