@@ -2,8 +2,8 @@ import React from 'react'
 
 const Featured = () => {
   return (
-    <section>
-      <h2 className="text-center">Featured</h2>
+    <section className=" snap-start">
+      <h2 className="text-center h-screen bg-blue-900">Featured</h2>
     </section>
   )
 }

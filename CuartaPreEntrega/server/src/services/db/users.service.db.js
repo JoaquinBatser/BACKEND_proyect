@@ -65,7 +65,7 @@ export default class UsersManager {
     try {
       const user = await this.repo.getById(id)
       return user
-        ? { success: true, user }
+        ? { success: true, message: 'User found', user }
         : { success: false, message: 'User not found' }
     } catch (error) {
       return { success: false, message: error, user: false }
@@ -106,6 +106,17 @@ export default class UsersManager {
         : { success: false, message: 'Could not update last connection' }
     } catch (error) {
       return { success: false, message: error, user: false }
+    }
+  }
+
+  async addUserDocuments(uId, name, reference) {
+    try {
+      const repoResponse = await this.repo.addDocuments(uId, name, reference)
+      return repoResponse
+        ? { success: true, message: `${name} added` }
+        : { success: false, message: `Could not add ${name}` }
+    } catch (error) {
+      return { success: false, message: error }
     }
   }
 }

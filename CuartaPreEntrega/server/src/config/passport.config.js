@@ -11,7 +11,8 @@ const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL
 
 const userManager = new usersManager()
 
-const initializePassport = () => {
+// Cambio nombre
+const initializeGHPassport = () => {
   passport.use(
     'github',
     new GithubStrategy(
@@ -22,7 +23,9 @@ const initializePassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const user = await userModel.findOne({ email: profile?.emails[0]?.value })
+          const user = await userModel.findOne({
+            email: profile?.emails[0]?.value,
+          })
           if (user) {
             done(null, user)
           } else {
@@ -55,4 +58,4 @@ const initializePassport = () => {
   })
 }
 
-export default initializePassport
+export default initializeGHPassport

@@ -78,4 +78,12 @@ export default class UsersRepository {
       { $set: { last_connection: Date.now() } }
     )
   }
+  async addDocuments(uId, name, reference) {
+    return await this.userModel
+      .updateOne(
+        { _id: uId },
+        { $push: { documents: { name: name, reference: reference } } }
+      )
+      .lean()
+  }
 }

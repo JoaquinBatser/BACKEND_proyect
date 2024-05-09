@@ -38,15 +38,15 @@ const Login = () => {
 
   return (
     <section className="mt-11 h-full">
-      <div className=" flex justify-center items-center flex-col text-center w-[600px]  m-auto mt-24 rounded-3xl shadow-lg py-11">
-        <img src={lock} alt="" className="h-72" />
-        <form className="mb-6" id="login-html" onSubmit={logUser}>
-          <h2 className="font-bold text-xl mb-4">
+      <div className=" flex justify-center items-center flex-col text-center w-[600px]  m-auto mt-24 rounded-3xl shadow-2xl py-11 px-20">
+        <img src={lock} alt="" className="h-56" />
+        <form className=" w-full mb-6" id="login-html" onSubmit={logUser}>
+          <h2 className="font-medium text-2xl mb-11">
             Login using your email and password
           </h2>
           <div>
             <input
-              className=" focus:outline-blue-400   focus:ring-1 mb-2 rounded-3xl px-6 py-2"
+              className=" w-full focus:outline-0 transition-all border border-neutral-300 focus:border-blue-500 rounded-md px-4 py-2 mb-4"
               placeholder="Email"
               type="text"
               id="email"
@@ -59,7 +59,7 @@ const Login = () => {
 
           <div>
             <input
-              className=" focus:outline-blue-400  focus:ring-1 mb-2 rounded-3xl  px-6 py-2"
+              className=" w-full focus:outline-0 transition-all border border-neutral-300 focus:border-blue-500 rounded-md px-4 py-2"
               placeholder="Password"
               type="password"
               id="password"
@@ -70,19 +70,19 @@ const Login = () => {
             />
           </div>
           <button
-            className="mt-4 bg-sky-300 font-bold text-white tracking-wide rounded-3xl  hover:shadow px-8 py-2  transition-all"
+            className="bg-blue-500 hover:bg-blue-600 transition-all text-white font-medium rounded-md px-10 py-1 mt-6"
             type="submit"
           >
             Login
           </button>
         </form>
         <button
-          className=" hover:underline text-sky-500"
+          className=" hover:underline text-blue-500 mb-1"
           onClick={ForgotPassword}
         >
           Forgot password?
         </button>
-        <div className=" hover:underline text-sky-500">
+        <div className=" hover:underline text-blue-500">
           <NavLink to="/signup">Create account</NavLink>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
+import { faker } from '@faker-js/faker'
 
 export const __filename = fileURLToPath(import.meta.url)
 export const __dirname = dirname(__filename)
@@ -9,7 +10,7 @@ export const __dirname = dirname(__filename)
 import bcrypt, { hashSync, genSaltSync, compareSync } from 'bcrypt'
 
 // register
-export const createHash = password => {
+export const createHash = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 }
 

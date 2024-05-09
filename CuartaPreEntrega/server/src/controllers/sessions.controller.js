@@ -145,10 +145,34 @@ const updatePassword = async (req, res, next) => {
 }
 
 const changeRole = async (req, res, next) => {
-  const { uId } = req.params
-  const { newRole } = req.body
-
   try {
+    const { uId } = req.params
+    const { newRole } = req.body
+    let identification = false
+    let address = false
+    let status = false
+
+    const userService = await usersManager.getUserById(uId)
+
+    userService.user.documents.forEach((doc) => {
+      if (doc.name === 'identification') {
+        identification = true
+      }
+      if (doc.name === 'address') {
+        address = true
+      }
+      if (doc.name === 'status') {
+        status = true
+      }
+    })
+
+    if (!identification || !address || !status) {
+      res.status(400).json({
+        success: false,
+        message: 'Could not change role without all documents uploaded',
+      })
+    }
+
     const userData = await usersManager.changeRole(uId, newRole)
 
     if (!userData.success) {
@@ -167,10 +191,26 @@ const changeRole = async (req, res, next) => {
     next(error.message)
   }
 }
-const uploadDocument = async (req, res, next) => {
-  console.log(req.file)
 
-  res.status(200).json({ message: 'se subio el archivo' })
+const uploadDocument = async (req, res, next) => {
+  try {
+    const name = req.params.docType
+    const reference = `http://localhost:8000/${req.file.filename}`
+    const { uId } = req.params
+    const userData = await usersManager.addUserDocuments(uId, name, reference)
+
+    if (!userData.success) {
+      res.status(400).json({
+        success: userData.success,
+        message: userData.message,
+      })
+    }
+    res
+      .status(200)
+      .json({ success: userData.success, message: userData.message })
+  } catch (error) {
+    next(error.message)
+  }
 }
 
 export default {

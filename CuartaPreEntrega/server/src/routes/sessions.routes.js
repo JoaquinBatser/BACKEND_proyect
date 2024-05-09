@@ -39,8 +39,9 @@ sessionsRouter.put('/password/change/:token', sessionsController.updatePassword)
 
 sessionsRouter.get('/premium/:uId', sessionsController.changeRole)
 
+// Cambio
 sessionsRouter.post(
-  '/:uId/documents',
+  '/:uId/documents/:docType',
   uploader.single('file'),
   sessionsController.uploadDocument
 )

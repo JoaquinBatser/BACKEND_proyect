@@ -2,10 +2,10 @@ import multer from 'multer'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const { document } = req.body
-
+    //Cambio
+    const { docType } = req.params
     let destinationFolder
-    switch (document) {
+    switch (docType) {
       case 'identification':
         destinationFolder = 'src/public/uploads/documents/identification'
         break
@@ -26,25 +26,26 @@ const storage = multer.diskStorage({
     }
     cb(null, destinationFolder)
   },
-  filename: function (req, res, cb) {
-    const { uId } = req.params
-    const { document } = req.bodyd
+  filename: function (req, file, cb) {
+    //Cambio
+    const { uId, docType } = req.params
+
     let newFileName
-    switch (document) {
+    switch (docType) {
       case 'identification':
-        newFileName = `${uId}-${document}.${file.originalname}`
+        newFileName = `${uId}-${docType}.${file.originalname}`
         break
       case 'address':
-        newFileName = `${uId}-${document}.${file.originalname}`
+        newFileName = `${uId}-${docType}.${file.originalname}`
         break
       case 'status':
-        newFileName = `${uId}-${document}.${file.originalname}`
+        newFileName = `${uId}-${docType}.${file.originalname}`
         break
       case 'profileImg':
-        newFileName = `${uId}-${document}.${file.originalname}`
+        newFileName = `${uId}-${docType}.${file.originalname}`
         break
       case 'productImg':
-        newFileName = `${uId}-${document}.${file.originalname}`
+        newFileName = `${uId}-${docType}.${file.originalname}`
         break
       default:
         cb(new Error('Invalid document type'))
