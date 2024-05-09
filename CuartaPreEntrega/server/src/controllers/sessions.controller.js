@@ -167,7 +167,7 @@ const changeRole = async (req, res, next) => {
     })
 
     if (!identification || !address || !status) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'Could not change role without all documents uploaded',
       })
@@ -176,7 +176,7 @@ const changeRole = async (req, res, next) => {
     const userData = await usersManager.changeRole(uId, newRole)
 
     if (!userData.success) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: 'Could not change role',
       })

@@ -5,9 +5,11 @@ import { loginValidator } from '../validation/loginValidator.js'
 import { signupValidator } from '../validation/signupValidator.js'
 import UsersRepository from '../repositories/users.repository.js'
 import { userModel } from '../models/user.model.js'
+import repositories from '../repositories/index.js'
 
-const usersRepository = new UsersRepository(userModel)
-const userManager = new UsersManager(usersRepository)
+// const usersRepository = new UsersRepository(userModel)
+// const userManager = new UsersManager(usersRepository)
+const userManager = new UsersManager(repositories.users)
 
 // Cambio: creamos funcion y se ejecuta en app.js
 const initializePassport = () => {

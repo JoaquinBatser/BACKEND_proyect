@@ -37,7 +37,7 @@ sessionsRouter.get(
 )
 sessionsRouter.put('/password/change/:token', sessionsController.updatePassword)
 
-sessionsRouter.get('/premium/:uId', sessionsController.changeRole)
+sessionsRouter.put('/premium/:uId', sessionsController.changeRole)
 
 // Cambio
 sessionsRouter.post(

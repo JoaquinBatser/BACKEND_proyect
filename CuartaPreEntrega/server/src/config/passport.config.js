@@ -3,13 +3,14 @@ import GithubStrategy from 'passport-github2'
 import usersManager from '../services/db/users.service.db.js'
 import dotenv from 'dotenv'
 import { userModel } from '../models/user.model.js'
+import repositories from '../repositories/index.js'
 
 dotenv.config()
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
 const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL
 
-const userManager = new usersManager()
+const userManager = new usersManager(repositories.users)
 
 // Cambio nombre
 const initializeGHPassport = () => {
