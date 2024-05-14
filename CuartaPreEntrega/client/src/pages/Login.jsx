@@ -20,6 +20,7 @@ const Login = () => {
     console.log(fetchUser)
     if (fetchUser.data.success) {
       setUser(fetchUser.data.user)
+      localStorage.setItem('user', JSON.stringify(fetchUser.data.user))
       navigate('/')
     } else {
       console.log('NUUH')

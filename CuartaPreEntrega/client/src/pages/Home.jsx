@@ -9,10 +9,11 @@ import Featured from '../components/Featured'
 const Home = () => {
   const { user } = useContext(UserContext)
   return (
-    <main className="snap-y snap-mandatory h-screen overflow-y-auto">
+    <main className="">
       {user && user.role === 'user' && <ChatBubble />}
       <Hero />
       <Featured />
+      <ProductListContainer />
     </main>
   )
 }

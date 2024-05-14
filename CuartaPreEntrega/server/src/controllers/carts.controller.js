@@ -68,8 +68,12 @@ const createCart = async (req, res, next) => {
 
 const addProductToCart = async (req, res, next) => {
   const { cId, pId } = req.params
+  console.log(cId, pId)
 
   try {
+    console.log('aca')
+    console.log(req.session)
+    console.log(req.user.user.role)
     if (req.user.user.role == 'premium') {
       const productData1 = await productsManager.getProductById(pId)
 

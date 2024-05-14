@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 const ProductList = ({ products }) => {
   const { docs } = products
   return (
-    <ul>
+    <ul className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-y-24 mt-11 px-12">
       {docs.map((product) => (
         <li>
           {/* <NavLink to={`/product/${product.id}`}> */}

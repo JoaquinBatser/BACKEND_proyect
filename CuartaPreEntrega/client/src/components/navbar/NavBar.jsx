@@ -8,8 +8,8 @@ const NavBar = () => {
   console.log('user', user)
 
   return (
-    <div className=" backdrop-blur fixed w-full flex justify-center h-11 text-sm items-center top-0 left-0">
-      <nav className="flex justify-between items-center w-[1024px]">
+    <div className=" bg-black/10 fixed w-full flex justify-center h-11 text-sm items-center top-0 left-0">
+      <nav className="flex justify-between items-center w-[1280px] px-12">
         <NavLink to={'/'}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
