@@ -25,9 +25,9 @@ const ProductListContainer = () => {
   }, [category, page])
 
   return (
-    <section className="h-screen max-w-[1280px] m-auto pt-11">
+    <section className="h-screen max-w-[1280px] m-auto py-11 ">
       {productsData.success ? (
-        <div>
+        <div className="sticky top-0">
           <div className="flex gap-2 justify-center">
             <button
               onClick={() => {

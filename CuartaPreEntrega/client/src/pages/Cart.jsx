@@ -36,7 +36,7 @@ const Cart = () => {
       }
     }
     fetchCart()
-  }, [])
+  }, [user])
 
   const emptyThisCart = async () => {
     try {
@@ -54,7 +54,7 @@ const Cart = () => {
       {user ? (
         <section className="pt-11 max-w-[1280px] m-auto px-12">
           <h1 className="text-3xl font-semibold">{user.first_name}'s Cart</h1>
-          <ul className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-y-24 mt-11">
+          <ul className="grid grid-cols-[repeat(auto-fit,minmax(640px,1fr))] gap-y-24 mt-11">
             {cartProducts.map((product) => (
               <CartItems product={product} />
             ))}
