@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom'
 const Cart = () => {
   const [cartData, setCartData] = useState([])
   const [cartProducts, setCartProducts] = useState([])
+  const [cartId, setCartId] = useState('')
   const { user } = useContext(UserContext)
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const Cart = () => {
           return
         }
         console.log('cr', cartResponse.data.cartData)
+        setCartId(cartResponse.data.cartData.cart._id)
         setCartData(cartResponse.data.cartData)
         setCartProducts(cartResponse.data.cartData.cart.products)
       } catch (error) {
@@ -40,7 +42,7 @@ const Cart = () => {
 
   const emptyThisCart = async () => {
     try {
-      await emptyCart()
+      await emptyCart(cartId)
       const cartResponse = await getCart()
       setCartData(cartResponse.data)
       setCartProducts(cartResponse.data.data.products)
@@ -56,12 +58,16 @@ const Cart = () => {
           <h1 className="text-3xl font-semibold">{user.first_name}'s Cart</h1>
           <ul className="grid grid-cols-[repeat(auto-fit,minmax(640px,1fr))] gap-y-24 mt-11">
             {cartProducts.map((product) => (
-              <CartItems product={product} />
+              <CartItems
+                cartId={cartId}
+                key={product.product._id}
+                product={product}
+              />
             ))}
           </ul>
         </section>
       ) : (
-        <div>
+        <div className="pt-11 max-w-[1280px] m-auto px-12">
           <h2>Log in to see your cart</h2>
           <NavLink to="/login">Login</NavLink>
           <NavLink to="/signup">Signup</NavLink>

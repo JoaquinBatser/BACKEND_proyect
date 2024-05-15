@@ -127,7 +127,7 @@ export default class CartsManager {
   async newTicket(ticketData) {
     try {
       const ticket = await this.repo.newTicket(ticketData)
-      return result
+      return ticket
     } catch (error) {
       console.log(error)
     }

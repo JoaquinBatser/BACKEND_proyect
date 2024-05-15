@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { getUser, sendPassswordChangeEmail } from '../api/fetch'
+import { getUser, logout, sendPassswordChangeEmail } from '../api/fetch'
 import { NavLink } from 'react-router-dom'
 import { loginUser } from '../api/fetch'
 import { useNavigate } from 'react-router-dom'

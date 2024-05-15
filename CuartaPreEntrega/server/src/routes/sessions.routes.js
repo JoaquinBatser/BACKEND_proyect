@@ -5,6 +5,12 @@ import uploader from '../middlewares/multer.js'
 
 const sessionsRouter = Router()
 
+sessionsRouter.get('/', sessionsController.getUsers)
+
+sessionsRouter.delete('/', sessionsController.deleteOldUsers)
+
+sessionsRouter.delete('/:uId', sessionsController.deleteUser)
+
 sessionsRouter.post(
   '/signup',
   passport.authenticate('signup'),
@@ -16,6 +22,8 @@ sessionsRouter.post(
   passport.authenticate('login'),
   sessionsController.login
 )
+
+sessionsRouter.post('/logout', sessionsController.logout)
 
 sessionsRouter.get(
   '/github',

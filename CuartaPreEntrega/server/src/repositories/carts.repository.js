@@ -86,6 +86,6 @@ export default class CartsRepository {
   }
 
   async newTicket(ticketData) {
-    return await cartModel.create(ticketData)
+    return await this.cartModel.create(ticketData)
   }
 }

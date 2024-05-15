@@ -57,6 +57,32 @@ export const loginUser = async ({ userData }) => {
   }
 }
 
+export const getUsers = async () => {
+  try {
+    const data = await axios.get('/api/sessions')
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteUser = async (userId) => {
+  try {
+    const data = await axios.delete(`/api/sessions/${userId}`)
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const logout = async () => {
+  try {
+    const data = await axios.post('/api/sessions/logout')
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
 export const sendPassswordChangeEmail = async (email) => {
   try {
     console.log('fetch', email)
@@ -135,6 +161,17 @@ export const addProductToCart = async (productId, cartId) => {
   }
 }
 
+export const updateProductQuantity = async (productId, cartId, quantity) => {
+  try {
+    const data = await axios.put(`api/carts/${cartId}/product/${productId}`, {
+      quantity,
+    })
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const sendSocketMessage = async ({ messageData }) => {
   try {
     const data = await axios.post('/api/chat', messageData)
@@ -153,9 +190,9 @@ export const getMessages = async () => {
   }
 }
 
-export const emptyCart = async () => {
+export const emptyCart = async (cartId) => {
   try {
-    const data = await axios.delete('/api/carts/65f8c3f6c77a348bcd692740')
+    const data = await axios.delete(`/api/carts/${cartId}`)
     return data
   } catch (error) {
     console.log(error)

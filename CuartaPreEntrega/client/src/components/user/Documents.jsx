@@ -20,6 +20,7 @@ const Documents = () => {
 
   return (
     <form
+      className="mb-14"
       method="post"
       enctype="multipart/form-data"
       onSubmit={uploadDocsFunction}

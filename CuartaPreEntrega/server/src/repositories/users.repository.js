@@ -4,6 +4,13 @@ export default class UsersRepository {
     this.userModel = model
   }
 
+  async getAll() {
+    return await this.userModel.find({}, { first_name: 1, email: 1, role: 1 })
+  }
+
+  async delete(uId) {
+    return await this.userModel.deleteOne({ _id: uId })
+  }
   async add(user) {
     let newUser
     const { email, password } = user
@@ -33,6 +40,7 @@ export default class UsersRepository {
 
   async login({ email, password }) {
     const user = await this.userModel.findOne({ email })
+    console.log(user)
 
     if (!user) {
       return { message: 'User does not exist', success: false }
@@ -72,9 +80,9 @@ export default class UsersRepository {
       { new: true }
     )
   }
-  async lastConnection(uId) {
+  async lastConnection(id) {
     return await this.userModel.updateOne(
-      { _id: uId },
+      { _id: id },
       { $set: { last_connection: Date.now() } }
     )
   }
@@ -85,5 +93,20 @@ export default class UsersRepository {
         { $push: { documents: { name: name, reference: reference } } }
       )
       .lean()
+  }
+
+  async deleteOldUsers() {
+    const TIME = 1
+    const oldUsers = await this.userModel
+      .find({
+        last_connection: { $lt: Date.now() - TIME },
+      })
+      .lean()
+
+    await this.userModel.deleteMany({
+      last_connection: { $lt: Date.now() - TIME },
+    })
+
+    return oldUsers
   }
 }

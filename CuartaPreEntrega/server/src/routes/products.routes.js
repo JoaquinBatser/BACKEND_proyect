@@ -12,8 +12,8 @@ productsRouter.get('/:id', productsController.getProductById)
 
 productsRouter.post(
   '/',
-  isAllowed(['admin', 'premium']),
-  uploader.single('file'),
+  // isAllowed(['admin', 'premium']),
+  // uploader.single('file'),
   productsController.addProduct
 )
 
@@ -25,7 +25,7 @@ productsRouter.put(
 
 productsRouter.delete(
   '/:id',
-  isAllowed(['admin', 'premium']),
+  // isAllowed(['admin', 'premium']),
   productsController.deleteProduct
 )
 

@@ -8,6 +8,32 @@ export default class UsersManager {
     this.repo = repo
     this.addUser = this.addUser.bind(this)
   }
+
+  async getUsers() {
+    try {
+      const users = await this.repo.getAll()
+      return users
+        ? { success: true, message: 'Users found', users }
+        : { success: false, message: 'No users found' }
+    } catch (error) {
+      return { success: false, message: error, users: false }
+    }
+  }
+
+  async deleteUser(uId) {
+    try {
+      const repoResponse = await this.repo.delete(uId)
+      return repoResponse
+        ? { success: true, message: 'User deleted' }
+        : { success: false, message: 'Could not delete user' }
+    } catch (error) {
+      return {
+        success: false,
+        message: error,
+      }
+    }
+  }
+
   async addUser(user) {
     try {
       const repoResponse = await this.repo.add(user)
@@ -37,6 +63,14 @@ export default class UsersManager {
     }
   }
 
+  async deleteOldUsers() {
+    try {
+      const repoResponse = await this.repo.deleteOldUsers()
+      return repoResponse
+    } catch (error) {
+      return { success: false, message: error }
+    }
+  }
   async loginUser({ email, password }) {
     try {
       const repoResponse = await this.repo.login({ email, password })
@@ -100,7 +134,9 @@ export default class UsersManager {
 
   async lastConnection(uId) {
     try {
+      console.log(uId)
       const user = await this.repo.lastConnection(uId)
+      console.log('alstcone', user)
       return user
         ? { success: true, message: 'Last connection updated', user }
         : { success: false, message: 'Could not update last connection' }

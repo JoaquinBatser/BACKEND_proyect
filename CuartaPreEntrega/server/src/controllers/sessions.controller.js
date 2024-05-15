@@ -7,6 +7,26 @@ import dotenv from 'dotenv'
 dotenv.config()
 const usersManager = new UsersManager(repositories.users)
 
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await usersManager.getUsers()
+    if (!users.success) {
+      res.json({
+        success: false,
+        message: 'Could not find users',
+      })
+    } else {
+      res.json({
+        success: true,
+        message: 'Users found',
+        users: users.users,
+      })
+    }
+  } catch (error) {
+    next(error.message)
+  }
+}
+
 const signup = async (req, res, next) => {
   try {
     const id = req.session.passport.user
@@ -35,6 +55,7 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const id = req.session.passport.user
+    await usersManager.lastConnection(id)
     const userData = await usersManager.getUserById(id)
     const { password, ...data } = userData.user
     console.log('login')
@@ -53,6 +74,21 @@ const login = async (req, res, next) => {
         session: req.session,
       })
     }
+  } catch (error) {
+    next(error.message)
+  }
+}
+
+const logout = async (req, res, next) => {
+  try {
+    const id = req.session.passport.user
+
+    await usersManager.lastConnection(id)
+    req.session.destroy()
+    res.json({
+      success: true,
+      message: 'User logged out',
+    })
   } catch (error) {
     next(error.message)
   }
@@ -144,6 +180,44 @@ const updatePassword = async (req, res, next) => {
   }
 }
 
+const deleteOldUsers = async (req, res, next) => {
+  try {
+    const repoResponse = await usersManager.deleteOldUsers()
+
+    repoResponse.forEach((user) => {
+      mailing.sendDeletedAccount(user.email)
+    })
+
+    res.status(200).json({
+      usersDeleted: repoResponse,
+    })
+  } catch (error) {
+    next(error.message)
+  }
+}
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { uId } = req.params
+    const user = await usersManager.getUserById(uId)
+    if (!user.success) {
+      res.status(400).json({
+        success: false,
+        message: 'Could not find user',
+      })
+    }
+    await usersManager.deleteUser(uId)
+    mailing.sendDeletedAccount(user.user.email)
+    res.status(200).json({
+      success: true,
+      message: 'User deleted',
+      user: user.user,
+    })
+  } catch (error) {
+    next(error.message)
+  }
+}
+
 const changeRole = async (req, res, next) => {
   try {
     const { uId } = req.params
@@ -214,6 +288,7 @@ const uploadDocument = async (req, res, next) => {
 }
 
 export default {
+  getUsers,
   signup,
   login,
   githubCallback,
@@ -222,4 +297,7 @@ export default {
   sendPasswordResetEmail,
   changeRole,
   uploadDocument,
+  logout,
+  deleteOldUsers,
+  deleteUser,
 }

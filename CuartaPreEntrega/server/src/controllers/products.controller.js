@@ -2,12 +2,14 @@ import ProductsManager from '../services/db/products.service.db.js'
 import repositories from '../repositories/index.js'
 import { productValidator } from '../validation/productValidator.js'
 import CustomError from '../services/CustomError.js'
+import UsersManager from '../services/db/users.service.db.js'
+import mailing from '../middlewares/mailing.js'
 
 const productManager = new ProductsManager(repositories.products)
 
 const getProducts = async (req, res, next) => {
   try {
-    const { limit = 10, page = 1, sort, category } = req.query
+    const { limit = 9, page = 1, sort, category } = req.query
 
     console.log('query', req.query)
     const filter = {
@@ -58,11 +60,11 @@ const getProductById = async (req, res, next) => {
 }
 
 const addProduct = async (req, res, next) => {
-  const { title, description, price, category, thumbnail, code, stock } =
+  const { title, description, price, category, thumbnail, code, stock, owner } =
     req.body
 
-  const owner = req.user.user._id
-  console.log('owner', owner)
+  // const owner = req.user.user._id
+  // console.log('owner', owner)
 
   try {
     const productData = await productManager.addProduct({
@@ -119,16 +121,31 @@ const updateProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
   const { id } = req.params
   try {
-    console.log('controller', req.user.user)
-    if (req.user.user.role == 'premium') {
-      const productData1 = await productManager.getProductById(pid)
+    console.log('controller', id)
+    // if (req.user.user.role == 'premium') {
+    //   const productData1 = await productManager.getProductById(pid)
 
-      if (productData1.product.owner != req.user.user._id) {
+    //   if (productData1.product.owner != req.user.user._id) {
+    //     return res.status(403).json({
+    //       success: false,
+    //       message: 'Forbidden',
+    //     })
+    //   }
+    // }
+
+    const owner = await UsersManager.getUserById('6643eb247568751739dd4e73')
+    console.log('owner', owner)
+    if (owner.user.role == 'premium') {
+      const productData1 = await productManager.getProductById(id)
+
+      if (productData1.product.owner != owner.user._id) {
         return res.status(403).json({
           success: false,
           message: 'Forbidden',
         })
       }
+      const productData = await productManager.deleteProduct(id)
+      mailing.sendDeletedProduct(owner.user.email)
     }
     const productData = await productManager.deleteProduct(id)
 

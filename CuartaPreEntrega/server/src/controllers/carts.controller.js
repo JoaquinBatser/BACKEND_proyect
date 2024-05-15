@@ -110,6 +110,7 @@ const updateProductQuantity = async (req, res, next) => {
     if (!cartData.success) {
       throw new CustomError(cartData.message, 404)
     }
+    console.log('cartData:', cartData)
     res.status(200).json({
       cartData,
     })
@@ -156,8 +157,16 @@ const purchaseCart = async (req, res, next) => {
   const code = Math.random().toString(36).substring(2, 15)
 
   try {
-    const cart = await cartsManager.getCartById(cId)
+    const cartData = await cartsManager.getCartById(cId)
+    const { cart } = cartData
 
+    if (!purchaser) {
+      res.status(400).json({
+        success: false,
+        message: 'Purchaser not found',
+      })
+      return
+    }
     if (!cart) {
       res.status(404).json({
         success: false,

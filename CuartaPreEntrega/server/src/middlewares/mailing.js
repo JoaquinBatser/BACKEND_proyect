@@ -25,4 +25,36 @@ const sendPassswordChangeEmail = async (email, token) => {
   }
 }
 
-export default { sendPassswordChangeEmail }
+const sendDeletedAccount = async (email) => {
+  const mailOptions = {
+    from: process.env.NODEMAILER_MAIL,
+    to: email,
+    subject: 'Account Deletion',
+    html: `<p>Your account has been deleted</p>`,
+  }
+  try {
+    await transport.sendMail(mailOptions)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const sendDeletedProduct = async (email) => {
+  const mailOptions = {
+    from: process.env.NODEMAILER_MAIL,
+    to: email,
+    subject: 'Product Deletion',
+    html: `<p>Your product has been deleted</p>`,
+  }
+  try {
+    await transport.sendMail(mailOptions)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export default {
+  sendPassswordChangeEmail,
+  sendDeletedAccount,
+  sendDeletedProduct,
+}
