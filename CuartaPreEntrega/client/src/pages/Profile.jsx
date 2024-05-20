@@ -12,7 +12,7 @@ const Profile = () => {
   const logoutFn = async () => {
     try {
       const logoutRes = await logout()
-      console.log('logout')
+      console.log('logout', logoutRes)
       if (logoutRes.data.success) {
         localStorage.removeItem('user')
         navigate('/')
